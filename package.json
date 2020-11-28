@@ -1,0 +1,11 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "吳俊毅 <40282112+HankTwTw@users.noreply.github.com>",
+  "license": "MIT"
+}
