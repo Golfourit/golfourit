@@ -13,7 +13,6 @@ app.get('/schedule',(req,res)=>{
         
         cron_expression.push('0')
         cron_expression = cron_expression.map((x)=>parseInt(x))
-        cron_expression[1] = cron_expression[1] - 1
         let day = {}
         let format = ['year','month','date','hour','minute','second']
         for(let i in format){
