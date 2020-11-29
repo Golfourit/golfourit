@@ -14,13 +14,18 @@ app.get('/schedule',(req,res)=>{
         cron_expression.push('0')
         cron_expression = cron_expression.map((x)=>parseInt(x))
         cron_expression[1] = cron_expression[1] - 1
-        console.log(new Date(...cron_expression))
+        let day = {}
+        let format = ['year','month','date','hour','minute','second']
+        for(let i in format){
+            day[ format[i] ] = cron_expression[i]
+        }
+        console.log(day)
         if(a.has(type)){
             console.log(schedule.cancelJob(a.get(type)))
             a.delete(type)
         }
-        
-        let j = schedule.scheduleJob(new Date(...cron_expression), function(){
+
+        let j = schedule.scheduleJob(day, function(){
             console.log('send')
             if(!url)return
             request.get(url, function (error, response, body) {
