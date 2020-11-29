@@ -5,16 +5,22 @@ const app = express()
 
 let a = new Map()
 
-app.route('/schedule',(req,res)=>{
+app.get('/schedule',(req,res)=>{
     console.log("hi")
-    const {cron_expression,url,type} = req.params
+    try{
+        const {cron_expression,url,type} = req.params
 
-    if(a.has(type))a.get(type).cancel()
+        if(a.has(type))a.get(type).cancel()
 
-    const j = schedule.scheduleJob(new Date(...cron_expression), function(){
-        console.log("send")
-        request(url)
-    });
+        const j = schedule.scheduleJob(new Date(...cron_expression), function(){
+            console.log("send")
+            request(url)
+        });
+    
+    }
+    catch{
+        res.send("err")
+    }
     
     a.set(type,j)
     res.send('ok')
