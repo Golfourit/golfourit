@@ -14,16 +14,20 @@ app.get('/schedule',(req,res)=>{
         cron_expression.push('0')
         cron_expression = cron_expression.map((x)=>parseInt(x))
         cron_expression[1] = cron_expression[1] - 1
-        
+        console.log(new Date(...cron_expression))
         if(a.has(type)){
             console.log(schedule.cancelJob(a.get(type)))
             a.delete(type)
         }
         
         let j = schedule.scheduleJob(new Date(...cron_expression), function(){
-
+            console.log(send)
             if(!url)return
-            request(url)
+            request.get(url, function (error, response, body) {
+                console.error('error:', error); // Print the error if one occurred
+                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                console.log('body:', body); // Print the HTML for the Google homepage.
+            })
         });
 
         a.set(type,j)
