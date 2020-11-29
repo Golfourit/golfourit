@@ -21,7 +21,7 @@ app.get('/schedule',(req,res)=>{
         }
         
         let j = schedule.scheduleJob(new Date(...cron_expression), function(){
-            console.log(send)
+            console.log('send')
             if(!url)return
             request.get(url, function (error, response, body) {
                 console.error('error:', error); // Print the error if one occurred
