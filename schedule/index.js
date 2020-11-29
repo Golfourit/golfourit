@@ -6,24 +6,37 @@ const app = express()
 let a = new Map()
 
 app.get('/schedule',(req,res)=>{
-    console.log("hi")
+    console.log(req.query)
+    let {cron_expression,url,type} = req.query
     try{
-        const {cron_expression,url,type} = req.params
+        cron_expression = cron_expression.split(',')
+        
+        cron_expression.push('0')
+        cron_expression = cron_expression.map((x)=>parseInt(x))
+        cron_expression[1] = cron_expression[1] - 1
+        
+        if(a.has(type)){
+            console.log(schedule.cancelJob(a.get(type)))
+            a.delete(type)
+        }
+        
+        let j = schedule.scheduleJob(new Date(...cron_expression), function(){
 
-        if(a.has(type))a.get(type).cancel()
-
-        const j = schedule.scheduleJob(new Date(...cron_expression), function(){
-            console.log("send")
+            if(!url)return
             request(url)
         });
+
+        a.set(type,j)
+        res.send('ok')
     
     }
-    catch{
+    catch(err){
+        console.log(err)
         res.send("err")
     }
     
-    a.set(type,j)
-    res.send('ok')
+    
+    
     
 })
 app.listen(5001,()=>{
